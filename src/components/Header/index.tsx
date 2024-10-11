@@ -25,7 +25,7 @@ export default function Header() {
           <Link href={"/cash-history"} mr={5}>
             Histórico de Caixa
           </Link>
-          <Link href={"/cashier"} mr={5}>
+          <Link href={"/menu-registration"} mr={5}>
             Cadastro Cardápio
           </Link>
           <Link href={"/cashier"} mr={5}>
