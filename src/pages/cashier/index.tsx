@@ -69,9 +69,10 @@ export default function Cashier() {
         <Spacer />
         <Button
           onClick={handleOpenModalCashier}
-          bg="#480e1f"
-          color="#fff"
-          variant="outline"
+           bg="#480e1f"
+           color="#fff"
+          _hover={{ bg: "#480e1f" }}
+          variant="solid"
           ml={2}
         >
           Novo Caixa
