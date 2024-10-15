@@ -28,7 +28,7 @@ export default function Header() {
           <Link href={"/menu-registration"} mr={5}>
             Cadastro Cardápio
           </Link>
-          <Link href={"/cashier"} mr={5}>
+          <Link href={"/generate-order"} mr={5}>
             Gerar Pedidos
           </Link>
           <Link href={"/cashier"} mr={5}>
