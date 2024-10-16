@@ -17,52 +17,43 @@ import {
   } from "@chakra-ui/react";
   
 import { MdClose, MdDehaze } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalCloseCashier from "./components/ModalCloseCashier";
 import ModalOpenCashier from "./components/ModalOpenCashier";
 import ModalCashierDetail from "./components/ModalCashierDetail";
-
-  
-  const mockData = [
-    {
-      id: 1,
-      date: "22/12/2024",
-      time: "18:59",
-      initialValue: "R$ 10,00",
-      responsible: "Funcionário1",
-    },
-    {
-      id: 2,
-      date: "23/12/2024",
-      time: "09:30",
-      initialValue: "R$ 20,00",
-      responsible: "Funcionário2",
-    },
-    {
-      id: 3,
-      date: "24/12/2024",
-      time: "14:00",
-      initialValue: "R$ 30,00",
-      responsible: "Funcionário3",
-    },
-  ];
+import { HistoryCashier } from "../../models/HistoryCashier";
+import axios from "axios";
   
   export default function CashHistory() {
     const [openModalCashier, setOpenModalCashier] = useState<boolean>(false);
     const [openModalCashierDetail, setOpenModalCashierDetail] = useState<boolean>(false);
     const [closeModalCashier, setCloseModalCashier] = useState<boolean>(false);
+
+    const [historyCashier, setHistoryCashier] = useState<HistoryCashier[]>([])
     
     const handleOpenModalCashier = () => {
       setOpenModalCashier(!openModalCashier);
     };
-  
     const handleOpenModalCashierDetail = () => {
       setOpenModalCashierDetail(!openModalCashierDetail);
     };
-  
     const handleCloseModalCashier = () => {
       setCloseModalCashier(!closeModalCashier);
     };
+
+    const handleHistoryCashier = async () => {
+      try {
+        const resp = await axios.get("http://localhost:3001/cashiers")
+          setHistoryCashier(resp.data)
+      }catch(error){
+        console.error("Erro ao buscar dados.", error)
+      }
+    }
+
+    useEffect(() => {
+      handleHistoryCashier()
+    }, )
+    
   
     return (
       <Box padding={100}>
@@ -88,7 +79,7 @@ import ModalCashierDetail from "./components/ModalCashierDetail";
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {mockData.map((item) => (
+                    {historyCashier.map((item) => (
                       <Tr key={item.id} _hover={{ bg: "#d8d2cb" }}>
                         <Td>{item.date}</Td>
                         <Td>{item.time}</Td>
