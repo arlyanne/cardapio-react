@@ -17,7 +17,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { MdCreate, MdDisabledByDefault } from "react-icons/md";
+import { MdAdd, MdCreate, MdDisabledByDefault } from "react-icons/md";
 import OpenModalMenu from "./components/OpenModalMenu";
 import OpenModalDetailMenu from "./components/OpenModalDetailMenu";
 import CloseModalMenu from "./components/CloseModalMenu";
@@ -94,6 +94,7 @@ export function MenuRegistration() {
         <Spacer />
         <Button
           onClick={handleOpenModalMenu}
+          leftIcon={<MdAdd />}
           bg="#480e1f"
           color="#fff"
           _hover={{ bg: "#480e1f" }}
