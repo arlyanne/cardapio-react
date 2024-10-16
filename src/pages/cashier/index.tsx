@@ -19,7 +19,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
-import { MdDehaze } from "react-icons/md";
+import { MdAdd, MdDehaze } from "react-icons/md";
 import OpenModalCashier from "../cashHistory/components/ModalOpenCashier";
 import { useState } from "react";
 import ModalOrderDetails from "./components/ModalOrderDetails";
@@ -69,6 +69,7 @@ export default function Cashier() {
         <Spacer />
         <Button
           onClick={handleOpenModalCashier}
+          leftIcon={<MdAdd />}
            bg="#480e1f"
            color="#fff"
           _hover={{ bg: "#480e1f" }}

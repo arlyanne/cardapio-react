@@ -31,7 +31,7 @@ export default function Header() {
           <Link href={"/generate-order"} mr={5}>
             Gerar Pedidos
           </Link>
-          <Link href={"/cashier"} mr={5}>
+          <Link href={"/stock-management"} mr={5}>
             Gestão de Estoque
           </Link>
         </Flex>
