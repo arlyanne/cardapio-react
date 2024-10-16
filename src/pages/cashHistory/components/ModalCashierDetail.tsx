@@ -73,7 +73,7 @@ const mockData = [
   },
 ];
 
-export default function CashierDetail({ isOpen, handleClose }: Props) {
+export default function ModalCashierDetail({ isOpen, handleClose }: Props) {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 

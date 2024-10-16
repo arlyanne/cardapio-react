@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Card,
@@ -17,53 +19,46 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
-import { MdClose, MdDehaze } from "react-icons/md";
-import OpenModalCashier from "./modal/OpenModalCashier";
-import OpenModalCashierDetail from "./modal/OpenModalCashierDetail";
-import CloseModalCashier from "./modal/CloseModalCashier";
+import { MdAdd, MdDehaze } from "react-icons/md";
+import OpenModalCashier from "../cashHistory/components/ModalOpenCashier";
 import { useState } from "react";
-
+import ModalOrderDetails from "./components/ModalOrderDetails";
 
 const mockData = [
   {
-    id: 1,
-    date: "22/12/2024",
-    time: "18:59",
-    initialValue: "R$ 10,00",
-    responsible: "Funcionário1",
+    order: 1,
+    time: "18:30",
+    attendant: "João",
+    totalValue: "R$ 22,00",
+    paymentMethod: "Cartão de Débito",
   },
   {
-    id: 2,
-    date: "23/12/2024",
-    time: "09:30",
-    initialValue: "R$ 20,00",
-    responsible: "Funcionário2",
+    order: 2,
+    time: "19:02",
+    attendant: "Maria",
+    totalValue: "R$ 10,00",
+    paymentMethod: "Cartão de Crédito",
   },
   {
-    id: 3,
-    date: "24/12/2024",
-    time: "14:00",
-    initialValue: "R$ 30,00",
-    responsible: "Funcionário3",
+    order: 3,
+    time: "19:22",
+    attendant: "Maria",
+    totalValue: "R$ 10,00",
+    paymentMethod: "Cartão de Crédito",
   },
 ];
 
 export default function Cashier() {
   const [openModalCashier, setOpenModalCashier] = useState<boolean>(false);
-  const [openModalCashierDetail, setOpenModalCashierDetail] = useState<boolean>(false);
-  const [closeModalCashier, setCloseModalCashier] = useState<boolean>(false);
-  
+  const [openModalOrderDetail, setOpenModalOrderDetail] = useState<boolean>(false);
+
   const handleOpenModalCashier = () => {
     setOpenModalCashier(!openModalCashier);
   };
 
-  const handleOpenModalCashierDetail = () => {
-    setOpenModalCashierDetail(!openModalCashierDetail);
-  };
-
-  const handleCloseModalCashier = () => {
-    setCloseModalCashier(!closeModalCashier);
-  };
+  const handleOpenModalOrderDetail = () => {
+    setOpenModalOrderDetail(!openModalOrderDetail);
+  }
 
   return (
     <Box padding={100}>
@@ -74,77 +69,74 @@ export default function Cashier() {
         <Spacer />
         <Button
           onClick={handleOpenModalCashier}
-          bg="#480e1f"
-          color="#fff"
-          variant="outline"
+          leftIcon={<MdAdd />}
+           bg="#480e1f"
+           color="#fff"
+          _hover={{ bg: "#480e1f" }}
+          variant="solid"
           ml={2}
         >
-         Novo Caixa
+          Novo Caixa
         </Button>
       </Flex>
       <Box borderRadius={5} mt={5} bg={"white"}>
         <Card>
           <CardBody>
-            <TableContainer>
-              <Table variant={"simple"}>
-                <Thead>
-                  <Tr>
-                    <Th>Data</Th>
-                    <Th>Hora</Th>
-                    <Th>Valor Inicial</Th>
-                    <Th>Responsável</Th>
-                    <Th>Ações</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {mockData.map((item) => (
-                    <Tr key={item.id} _hover={{ bg: "#d8d2cb" }}>
-                      <Td>{item.date}</Td>
-                      <Td>{item.time}</Td>
-                      <Td>{item.initialValue}</Td>
-                      <Td>{item.responsible}</Td>
-                      <Td>
-                        <Tooltip label="Detalhe">
-                          <IconButton
-                            onClick={handleOpenModalCashierDetail}
-                            bg={"white"}
-                            aria-label={"Detalhe"}
-                            color={"#480e1f"}
-                            icon={<MdDehaze />}
-                            mr={2}
-                          ></IconButton>
-                        </Tooltip>
-                        <Tooltip label="Fechar Caixa">
-                          <IconButton
-                            onClick={handleCloseModalCashier}
-                            bg={"white"}
-                            aria-label={"Fechar Caixa"}
-                            color={"#480e1f"}
-                            icon={<MdClose />}
-                          ></IconButton>
-                        </Tooltip>
-                      </Td>
+            {mockData.length > 0 ? (
+              <TableContainer>
+                <Table variant={"simple"}>
+                  <Thead>
+                    <Tr>
+                      <Th>Pedido</Th>
+                      <Th>Horário</Th>
+                      <Th>Atendente</Th>
+                      <Th>Valor</Th>
+                      <Th>Forma de Pagamento</Th>
+                      <Th>Ações</Th>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-              {/* Componente de páginação */}
-            </TableContainer>
+                  </Thead>
+                  <Tbody>
+                    {mockData.map((item) => (
+                      <Tr key={item.order} _hover={{ bg: "#d8d2cb" }}>
+                        <Td>{item.order}</Td>
+                        <Td>{item.time}</Td>
+                        <Td>{item.attendant}</Td>
+                        <Td>{item.totalValue}</Td>
+                        <Td>{item.paymentMethod}</Td>
+                        <Td>
+                          <Tooltip label="Detalhe">
+                            <IconButton
+                              onClick={handleOpenModalOrderDetail}
+                              bg={"white"}
+                              aria-label={"Detalhe"}
+                              color={"#480e1f"}
+                              icon={<MdDehaze />}
+                              mr={2}
+                            ></IconButton>
+                          </Tooltip>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+                {/* Componente de páginação */}
+              </TableContainer>
+            ) : (
+              <Alert status="info">
+                <AlertIcon />
+                Nenhum Caixa Aberto!
+              </Alert>
+            )}
           </CardBody>
         </Card>
         <OpenModalCashier
-            isOpen={openModalCashier}
-             handleClose={handleOpenModalCashier}
-        />
-        <OpenModalCashierDetail
-            isOpen={openModalCashierDetail}
-            handleClose={handleOpenModalCashierDetail} 
-        />
-        <CloseModalCashier
-            isOpen={closeModalCashier}
-            handleClose={handleCloseModalCashier}
+          isOpen={openModalCashier}
+          handleClose={handleOpenModalCashier}
         />
       </Box>
+      <ModalOrderDetails
+         isOpen={openModalOrderDetail}
+         handleClose={handleOpenModalOrderDetail}/>
     </Box>
   );
 }
