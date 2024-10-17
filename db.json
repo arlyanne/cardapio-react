@@ -1,28 +1,118 @@
 {
-    "cashiers": [
-        {
-            "id": 1,
-            "date": "22/12/2024",
-            "time": "18:59",
-            "initialValue": "R$ 10,00",
-            "responsible": "Funcionário1",
-            "closingValue": "R$ 30,00"
-          },
-          {
-            "id": 2,
-            "date": "23/12/2024",
-            "time": "09:30",
-            "initialValue": "R$ 20,00",
-            "responsible": "Funcionário2",
-            "closingValue": "R$ 60,00"
-          },
-          {
-            "id": 3,
-            "date": "24/12/2024",
-            "time": "14:00",
-            "initialValue": "R$ 30,00",
-            "responsible": "Funcionário3",
-            "closingValue": "R$ 90,00"
-          }
-          ]
+  "cashiers": [
+    {
+      "id": "1",
+      "date": "22/12/2024",
+      "time": "18:59",
+      "initialValue": "R$ 10,00",
+      "responsible": "Funcionário1",
+      "closingValue": "R$ 30,00"
+    }
+  ],
+  "product": [
+    {
+      "id": "1",
+      "product": "Pizza Margherita",
+      "description": "Pizza tradicional com molho de tomate, mussarela e manjericão",
+      "category": "Pizzas",
+      "image": "",
+      "price": "R$ 35,00"
+    },
+    {
+      "id": "7cd5",
+      "product": "teste1jiojij",
+      "description": "teste1",
+      "category": "option1",
+      "price": "12",
+      "image": ""
+    },
+    {
+      "id": "8e0d",
+      "product": "teste1jiojij",
+      "description": "teste1",
+      "category": "option1",
+      "price": "12",
+      "image": ""
+    },
+    {
+      "id": "1b31",
+      "product": "teste1jiojij",
+      "description": "teste1",
+      "category": "option1",
+      "price": "12",
+      "image": ""
+    },
+    {
+      "id": "0d56",
+      "product": "teste1jiojij",
+      "description": "teste1",
+      "category": "option1",
+      "price": "12",
+      "image": ""
+    },
+    {
+      "id": "eb2b",
+      "product": "teste1jiojij",
+      "description": "teste1",
+      "category": "option1",
+      "price": "12",
+      "image": ""
+    },
+    {
+      "id": "0a1b",
+      "product": "teste2",
+      "description": "teste2",
+      "category": "option2",
+      "price": "12",
+      "image": ""
+    },
+    {
+      "id": "5fab",
+      "product": "teste3",
+      "description": "teste3",
+      "category": "option3",
+      "price": "15",
+      "image": ""
+    },
+    {
+      "id": "78f1",
+      "product": "teste4",
+      "description": "teste4",
+      "category": "option3",
+      "price": "5",
+      "image": ""
+    },
+    {
+      "id": "d348",
+      "product": "teste5",
+      "description": "teste5",
+      "category": "option1",
+      "price": "6",
+      "image": ""
+    },
+    {
+      "id": "8d99",
+      "product": "teste6",
+      "description": "teste6",
+      "category": "option2",
+      "price": "56",
+      "image": ""
+    },
+    {
+      "id": "5344",
+      "product": "teste7",
+      "description": "teste7",
+      "category": "option2",
+      "price": "9",
+      "image": ""
+    },
+    {
+      "id": "4e73",
+      "product": "teste8",
+      "description": "teste8",
+      "category": "Pizzas",
+      "price": "15",
+      "image": ""
+    }
+  ]
 }
