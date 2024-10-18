@@ -113,6 +113,27 @@
       "category": "Pizzas",
       "price": "15",
       "image": ""
+    },
+    {
+      "id": "d2f2",
+      "product": "teste100",
+      "description": "teste100",
+      "category": "Lanches",
+      "price": 35
+    },
+    {
+      "id": "d006",
+      "product": "teste101",
+      "description": "teste101",
+      "category": "Lanches",
+      "price": 56
+    },
+    {
+      "id": "e0d4",
+      "product": "Batata Frita",
+      "description": "500 gramas de Batata frita ondulada.",
+      "category": "Lanches",
+      "price": 22
     }
   ]
 }

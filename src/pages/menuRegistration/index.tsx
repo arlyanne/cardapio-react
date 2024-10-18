@@ -95,7 +95,7 @@ export function MenuRegistration() {
                       <Td>{item.product}</Td>
                       <Td>{item.description}</Td>
                       <Td>{item.category}</Td>
-                      <Td>{item.price}</Td>
+                      <Td>{`R$ ${(parseFloat(item.price) || 0).toFixed(2).replace(".", ",")}`}</Td>
                       <Td>
                         <Tooltip label="Detalhe">
                           <IconButton

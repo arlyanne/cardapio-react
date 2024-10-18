@@ -6,7 +6,7 @@ export const createMenuFormSchema = () => {
       description: yup.string(),
       category: yup.string().required('A categoria é obrigatória'),
       image: yup.string().url('A URL da imagem deve ser válida'),
-      price: yup.string().required('O preço é obrigatório')
+      price: yup.string().required("Preço é obrigatório")
     });
   };
 
