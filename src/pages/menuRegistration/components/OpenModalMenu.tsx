@@ -64,7 +64,16 @@ export default function OpenModalMenu({
           price: parseFloat(data.price.replace(/[R$]/g, "").replace(",", ".")),
           image: imageFile ? URL.createObjectURL(imageFile) : undefined,
         };
-        await axios.post("http://localhost:3001/product", productData);
+        if(editMenu) {
+          await axios.put(`http://localhost:3001/product/${editMenu.id}`, productData)
+          Swal.fire({
+            icon: "success",
+            title: "Produto atualizado com sucesso!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }else {
+          await axios.post("http://localhost:3001/product", productData);
         resetForm();
         Swal.fire({
           icon: "success",
@@ -72,9 +81,11 @@ export default function OpenModalMenu({
           showConfirmButton: false,
           timer: 1500,
         });
+        }
+        resetForm();
         updateProductList();
-        handleClose();
       } catch (error) {
+        handleClose();
         Swal.fire({
           icon: "error",
           title: "Erro ao cadastrar produto",
@@ -83,14 +94,14 @@ export default function OpenModalMenu({
         });
       }
     },
-    [reset, updateProductList, imageFile]
+    [reset, updateProductList, imageFile, editMenu]
   );
 
   // Reset do formulário e imagem ao fechar o modal
   const resetForm = () => {
-    reset(); // Reseta os campos do formulário
-    setImageFile(null); // Reseta a imagem
-    handleClose(); // Fecha o modal
+    reset();
+    setImageFile(null); 
+    handleClose(); 
   };
 
   useEffect(() => {
@@ -111,7 +122,7 @@ export default function OpenModalMenu({
       initialFocusRef={initialRef}
       finalFocusRef={finalRef}
       isOpen={isOpen}
-      onClose={resetForm} // Garante que o reset seja feito ao fechar
+      onClose={resetForm} 
     >
       <ModalOverlay />
       <ModalContent>
@@ -156,8 +167,12 @@ export default function OpenModalMenu({
               </FormControl>
             </SimpleGrid>
             <ModalFooter>
-              <Button type="submit" bg="#480e1f" color={"#fff"} mr={3}>
-                Salvar
+              <Button
+                type="submit" 
+                bg="#480e1f" 
+                color={"#fff"} 
+                mr={3}>
+                {editMenu ? "Editar" : "Salvar"}
               </Button>
               <Button onClick={resetForm}>Cancelar</Button> {/* Chama o reset ao cancelar */}
             </ModalFooter>

@@ -28,16 +28,16 @@ export function MenuRegistration() {
   const [selectMenu, setSelectMenu] = useState<RegistrationMenu | null>(null);
 
   const handleOpenModalMenu = () => {
-    setSelectMenu(null); // Certifique-se de que o selectMenu é nulo para novo produto
+    setSelectMenu(null); 
     setOpenModalMenu(true);
   };
 
   const handleCloseModalMenu = () => {
     setOpenModalMenu(false);
-    setSelectMenu(null); // Resetar o selectMenu ao fechar o modal
+    setSelectMenu(null); 
   };
 
-  const handleModalEditMenu = (item: any) => {
+  const handleModalEditMenu = (item: RegistrationMenu) => {
     setSelectMenu(item);
     setOpenModalMenu(true);
   };
