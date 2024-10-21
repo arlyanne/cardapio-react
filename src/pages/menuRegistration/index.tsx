@@ -16,64 +16,20 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdAdd, MdCreate, MdDisabledByDefault } from "react-icons/md";
 import OpenModalMenu from "./components/OpenModalMenu";
 import OpenModalDetailMenu from "./components/OpenModalDetailMenu";
 import CloseModalMenu from "./components/CloseModalMenu";
-
-const mockData = [
-  {
-    id: 1,
-    product: "Pizza Margherita",
-    description:
-      "Pizza tradicional com molho de tomate, mussarela e manjericão",
-    category: "Pizzas",
-    image: "",
-    price: "R$ 35,00",
-  },
-  {
-    product: "Hambúrguer Artesanal",
-    description: "Pão de brioche, carne 180g, queijo cheddar, alface e tomate",
-    category: "Lanches",
-    image: "",
-    price: "R$ 25,00",
-  },
-  {
-    product: "Sushi Combo 15 peças",
-    description: "Combinado de sushi com 5 nigiris, 5 uramakis e 5 sashimis",
-    category: "Sushi",
-    image: "",
-    price: "R$ 45,00",
-  },
-  {
-    product: "Salada Caesar",
-    description: "Alface americana, frango grelhado, croutons e molho Caesar",
-    category: "Saladas",
-    image: "",
-    price: "R$ 22,00",
-  },
-  {
-    product: "Lasanha Bolonhesa",
-    description: "Lasanha ao molho bolonhesa com queijo parmesão gratinado",
-    category: "Massas",
-    image: "",
-    price: "R$ 30,00",
-  },
-  {
-    product: "Suco de Laranja",
-    description: "Suco natural de laranja gelado",
-    category: "Bebidas",
-    image: "",
-    price: "R$ 8,00",
-  },
-];
+import axios from "axios";
+import { RegistrationMenu } from "./formSchema";
 
 export function MenuRegistration() {
+
   const [openModalMenu, setOpenModalMenu] = useState<boolean>(false);
-  const [openModalDetailMenu, setOpenModalDetailMenu] =
-    useState<boolean>(false);
+  const [openModalDetailMenu, setOpenModalDetailMenu] = useState<boolean>(false);
   const [closeModalMenu, setCloseModalMenu] = useState<boolean>(false);
+  const [listRegistrationMenu, setListRegistrationMenu] = useState<RegistrationMenu[]>([])
 
   const handleOpenModalMenu = () => {
     setOpenModalMenu(!openModalMenu);
@@ -85,6 +41,19 @@ export function MenuRegistration() {
     setCloseModalMenu(!closeModalMenu);
   };
 
+  const handleListRegistrationMenu = async () => {
+    try {
+      const resp = await axios.get("http://localhost:3001/product")
+        setListRegistrationMenu(resp.data)
+    }catch(error) {
+      console.error("Error ao buscar lista de produtos cadastrados", error)
+    }
+  } 
+
+  useEffect(() => {
+    handleListRegistrationMenu()
+  }, [])
+  
   return (
     <Box padding={100}>
       <Flex alignItems={"center"}>
@@ -120,13 +89,13 @@ export function MenuRegistration() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {mockData.map((item) => (
+                  {listRegistrationMenu.map((item) => (
                     <Tr key={item.id} _hover={{ bg: "#d8d2cb" }}>
                       <Td>{item.image}</Td>
                       <Td>{item.product}</Td>
                       <Td>{item.description}</Td>
                       <Td>{item.category}</Td>
-                      <Td>{item.price}</Td>
+                      <Td>{`R$ ${(parseFloat(item.price) || 0).toFixed(2).replace(".", ",")}`}</Td>
                       <Td>
                         <Tooltip label="Detalhe">
                           <IconButton
@@ -160,6 +129,7 @@ export function MenuRegistration() {
         <OpenModalMenu
           isOpen={openModalMenu}
           handleClose={handleOpenModalMenu}
+          updateProductList={handleListRegistrationMenu}
         />
         <OpenModalDetailMenu
           isOpen={openModalDetailMenu}
