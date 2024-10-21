@@ -19,41 +19,43 @@ import {
 import { useEffect, useState } from "react";
 import { MdAdd, MdCreate, MdDisabledByDefault } from "react-icons/md";
 import OpenModalMenu from "./components/OpenModalMenu";
-import OpenModalDetailMenu from "./components/OpenModalDetailMenu";
-import CloseModalMenu from "./components/CloseModalMenu";
 import axios from "axios";
 import { RegistrationMenu } from "./formSchema";
 
 export function MenuRegistration() {
-
   const [openModalMenu, setOpenModalMenu] = useState<boolean>(false);
-  const [openModalDetailMenu, setOpenModalDetailMenu] = useState<boolean>(false);
-  const [closeModalMenu, setCloseModalMenu] = useState<boolean>(false);
-  const [listRegistrationMenu, setListRegistrationMenu] = useState<RegistrationMenu[]>([])
+  const [listRegistrationMenu, setListRegistrationMenu] = useState<RegistrationMenu[]>([]);
+  const [selectMenu, setSelectMenu] = useState<RegistrationMenu | null>(null);
 
   const handleOpenModalMenu = () => {
-    setOpenModalMenu(!openModalMenu);
-  };
-  const handleModalDetailMenu = () => {
-    setOpenModalDetailMenu(!openModalDetailMenu);
-  };
-  const handleCloseModalMenu = () => {
-    setCloseModalMenu(!closeModalMenu);
+    setSelectMenu(null); // Certifique-se de que o selectMenu é nulo para novo produto
+    setOpenModalMenu(true);
   };
 
+  const handleCloseModalMenu = () => {
+    setOpenModalMenu(false);
+    setSelectMenu(null); // Resetar o selectMenu ao fechar o modal
+  };
+
+  const handleModalEditMenu = (item: any) => {
+    setSelectMenu(item);
+    setOpenModalMenu(true);
+  };
+
+  // Função para listar os registros
   const handleListRegistrationMenu = async () => {
     try {
-      const resp = await axios.get("http://localhost:3001/product")
-        setListRegistrationMenu(resp.data)
-    }catch(error) {
-      console.error("Error ao buscar lista de produtos cadastrados", error)
+      const resp = await axios.get("http://localhost:3001/product");
+      setListRegistrationMenu(resp.data);
+    } catch (error) {
+      console.error("Error ao buscar lista de produtos cadastrados", error);
     }
-  } 
+  };
 
   useEffect(() => {
-    handleListRegistrationMenu()
-  }, [])
-  
+    handleListRegistrationMenu();
+  }, [selectMenu]); 
+
   return (
     <Box padding={100}>
       <Flex alignItems={"center"}>
@@ -97,15 +99,15 @@ export function MenuRegistration() {
                       <Td>{item.category}</Td>
                       <Td>{`R$ ${(parseFloat(item.price) || 0).toFixed(2).replace(".", ",")}`}</Td>
                       <Td>
-                        <Tooltip label="Detalhe">
+                        <Tooltip label="Editar">
                           <IconButton
-                            onClick={handleModalDetailMenu}
+                            onClick={() => handleModalEditMenu(item)}
                             bg={"white"}
-                            aria-label={"Detalhe"}
+                            aria-label={"Editar"}
                             color={"#480e1f"}
                             icon={<MdCreate />}
                             mr={2}
-                          ></IconButton>
+                          />
                         </Tooltip>
                         <Tooltip label="Desativar">
                           <IconButton
@@ -115,29 +117,22 @@ export function MenuRegistration() {
                             color={"#480e1f"}
                             icon={<MdDisabledByDefault />}
                             mr={2}
-                          ></IconButton>
+                          />
                         </Tooltip>
                       </Td>
                     </Tr>
                   ))}
                 </Tbody>
               </Table>
-              {/* Componente de páginação */}
             </TableContainer>
           </CardBody>
         </Card>
+
         <OpenModalMenu
           isOpen={openModalMenu}
-          handleClose={handleOpenModalMenu}
+          handleClose={handleCloseModalMenu} 
           updateProductList={handleListRegistrationMenu}
-        />
-        <OpenModalDetailMenu
-          isOpen={openModalDetailMenu}
-          handleClose={handleModalDetailMenu}
-        />
-        <CloseModalMenu
-          isOpen={closeModalMenu}
-          handleClose={handleCloseModalMenu}
+          editMenu={selectMenu ?? undefined} 
         />
       </Box>
     </Box>

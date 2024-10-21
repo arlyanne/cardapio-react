@@ -17,7 +17,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { MdAdd, MdEdit, MdDelete, MdDisabledByDefault } from "react-icons/md";
+import { MdAdd, MdEdit, MdDisabledByDefault } from "react-icons/md";
 import ModalOpenStockManagement from "./components/ModalOpenStockManagement";
 import ModalOpenEditStockManagement from "./components/ModalOpenEditStockManagement";
 import ModalCloseStockManagement from "./components/ModalCloseStockManagement";
