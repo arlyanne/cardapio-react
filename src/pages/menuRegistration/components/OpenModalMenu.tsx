@@ -21,7 +21,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { createMenuFormSchema, RegistrationMenu } from "../formSchema";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ImageUpload from "../../../components/ImageUpload";
+import ImageUpload from "../../../components/ModalImage";
 import { formatCurrency, handlePriceChange } from "../../../utils/currencyUtils";
 
 interface Props {
@@ -168,13 +168,15 @@ export default function OpenModalMenu({
             </SimpleGrid>
             <ModalFooter>
               <Button
-                type="submit" 
-                bg="#480e1f" 
-                color={"#fff"} 
-                mr={3}>
+                bg="#480e1f"
+                color="#fff"
+               _hover={{ bg: "#480e1f" }}
+               variant="solid"
+               mr={3}
+                >
                 {editMenu ? "Editar" : "Salvar"}
               </Button>
-              <Button onClick={resetForm}>Cancelar</Button> {/* Chama o reset ao cancelar */}
+              <Button onClick={resetForm}>Cancelar</Button>
             </ModalFooter>
           </Box>
         </ModalBody>

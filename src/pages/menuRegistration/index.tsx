@@ -21,11 +21,13 @@ import { MdAdd, MdCreate, MdDisabledByDefault } from "react-icons/md";
 import OpenModalMenu from "./components/OpenModalMenu";
 import axios from "axios";
 import { RegistrationMenu } from "./formSchema";
+import ConfirmationModal from "../../components/ModalClose";
 
 export function MenuRegistration() {
   const [openModalMenu, setOpenModalMenu] = useState<boolean>(false);
   const [listRegistrationMenu, setListRegistrationMenu] = useState<RegistrationMenu[]>([]);
   const [selectMenu, setSelectMenu] = useState<RegistrationMenu | null>(null);
+  const [disableMenuProduct, setDisableMenuProduct] = useState(false)
 
   const handleOpenModalMenu = () => {
     setSelectMenu(null); 
@@ -41,6 +43,19 @@ export function MenuRegistration() {
     setSelectMenu(item);
     setOpenModalMenu(true);
   };
+
+  const handleDisableMenuProduct = () => {
+    setDisableMenuProduct(false)
+  }
+  const handleOpenMenuProduct = () => {
+    setDisableMenuProduct(true)
+  }
+
+  const handleConfirm = () => {
+    console.log("Produto desativado!");
+    handleDisableMenuProduct(); // Fecha o modal após a confirmação
+  };
+
 
   // Função para listar os registros
   const handleListRegistrationMenu = async () => {
@@ -111,7 +126,7 @@ export function MenuRegistration() {
                         </Tooltip>
                         <Tooltip label="Desativar">
                           <IconButton
-                            onClick={handleCloseModalMenu}
+                            onClick={handleOpenMenuProduct}
                             bg={"white"}
                             aria-label={"Desativar"}
                             color={"#480e1f"}
@@ -133,6 +148,12 @@ export function MenuRegistration() {
           handleClose={handleCloseModalMenu} 
           updateProductList={handleListRegistrationMenu}
           editMenu={selectMenu ?? undefined} 
+        />
+        <ConfirmationModal 
+          isOpen={disableMenuProduct}
+          handleClose={handleDisableMenuProduct}
+          onConfirm={handleConfirm}
+          message="Você tem certeza que deseja desativar este produto?"
         />
       </Box>
     </Box>
