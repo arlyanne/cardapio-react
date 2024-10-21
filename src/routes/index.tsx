@@ -10,7 +10,9 @@ const RouteApp = () => {
         <Routes>
             <Route element={<Cashier/>} path="/cashier" ></Route>
             <Route element={<CashHistory/>} path="/cash-history"></Route>
-            <Route element={<MenuRegistration/>} path="/menu-registration"></Route>
+            <Route element={<MenuRegistration/>} path="/menu-registration">
+            
+            </Route>
             <Route element={<GenerateOrder/>} path="/generate-order"></Route>
             <Route element={<StockManagement/>} path="/stock-management"></Route>
         </Routes>
