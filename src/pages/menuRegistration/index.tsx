@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Image,
   Spacer,
   Table,
   TableContainer,
@@ -30,13 +31,13 @@ export function MenuRegistration() {
   const [disableMenuProduct, setDisableMenuProduct] = useState(false)
 
   const handleOpenModalMenu = () => {
-    setSelectMenu(null); 
+    setSelectMenu(null);
     setOpenModalMenu(true);
   };
 
   const handleCloseModalMenu = () => {
     setOpenModalMenu(false);
-    setSelectMenu(null); 
+    setSelectMenu(null);
   };
 
   const handleModalEditMenu = (item: RegistrationMenu) => {
@@ -69,7 +70,7 @@ export function MenuRegistration() {
 
   useEffect(() => {
     handleListRegistrationMenu();
-  }, [selectMenu]); 
+  }, [selectMenu]);
 
   return (
     <Box padding={100}>
@@ -108,7 +109,9 @@ export function MenuRegistration() {
                 <Tbody>
                   {listRegistrationMenu.map((item) => (
                     <Tr key={item.id} _hover={{ bg: "#d8d2cb" }}>
-                      <Td>{item.image}</Td>
+                      <Td>
+                        <Image src={item.image}>
+                        </Image></Td>
                       <Td>{item.product}</Td>
                       <Td>{item.description}</Td>
                       <Td>{item.category}</Td>
@@ -145,11 +148,11 @@ export function MenuRegistration() {
 
         <OpenModalMenu
           isOpen={openModalMenu}
-          handleClose={handleCloseModalMenu} 
+          handleClose={handleCloseModalMenu}
           updateProductList={handleListRegistrationMenu}
-          editMenu={selectMenu ?? undefined} 
+          editMenu={selectMenu ?? undefined}
         />
-        <ConfirmationModal 
+        <ConfirmationModal
           isOpen={disableMenuProduct}
           handleClose={handleDisableMenuProduct}
           onConfirm={handleConfirm}
