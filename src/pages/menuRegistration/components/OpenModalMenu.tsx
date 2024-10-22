@@ -21,8 +21,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { createMenuFormSchema, RegistrationMenu } from "../formSchema";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ImageUpload from "../../../components/ImageUpload";
 import { formatCurrency, handlePriceChange } from "../../../utils/currencyUtils";
+import { ImageUpload } from "../../../components/ImageUpload";
+
 
 interface Props {
   isOpen: boolean;
@@ -40,7 +41,7 @@ export default function OpenModalMenu({
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<string | null>(null);
 
   const {
     register,
@@ -48,33 +49,65 @@ export default function OpenModalMenu({
     formState: { errors },
     setValue,
     reset,
+
   } = useForm<RegistrationMenu>({
     resolver: yupResolver(createMenuFormSchema()) as any,
   });
 
-  const handleImageChange = (file: File | null) => {
+  const handleImageChange = (file: string | null) => {
     setImageFile(file); // Atualiza o estado com o arquivo da imagem
   };
+
+  const handleCreateProduct = async (body: any) => {
+    await axios.post("http://localhost:3001/product", body, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    resetForm();
+    updateProductList();
+    Swal.fire({
+      icon: "success",
+      title: "Produto cadastrado com sucesso!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+
+  const handleUpdateProduct = async (body: any) => {
+    await axios.put(`http://localhost:3001/product/${editMenu.id}`, body, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    resetForm();
+    updateProductList();
+    Swal.fire({
+      icon: "success",
+      title: "Produto atualizado com sucesso!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
 
   const handleCreateRegistrationMenu: SubmitHandler<RegistrationMenu> = useCallback(
     async (data) => {
       try {
-        const productData = {
-          ...data,
-          price: parseFloat(data.price.replace(/[R$]/g, "").replace(",", ".")),
-          image: imageFile ? URL.createObjectURL(imageFile) : undefined,
-        };
-        await axios.post("http://localhost:3001/product", productData);
-        resetForm();
-        Swal.fire({
-          icon: "success",
-          title: "Produto cadastrado com sucesso!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        updateProductList();
-        handleClose();
+        const body = {
+          product: data.product,
+          description: data.description,
+          category: data.category,
+          price: data.price.replace(/[R$]/g, "").replace(",", ".") || '',
+          image: imageFile
+        }
+        console.log(editMenu)
+        if (editMenu) {
+          await handleUpdateProduct(body)
+        } else {
+          await handleCreateProduct(body)
+        }
       } catch (error) {
+        handleClose();
         Swal.fire({
           icon: "error",
           title: "Erro ao cadastrar produto",
@@ -83,14 +116,14 @@ export default function OpenModalMenu({
         });
       }
     },
-    [reset, updateProductList, imageFile]
+    [handleCreateProduct, handleUpdateProduct, imageFile, editMenu]
   );
 
   // Reset do formulário e imagem ao fechar o modal
   const resetForm = () => {
-    reset(); // Reseta os campos do formulário
-    setImageFile(null); // Reseta a imagem
-    handleClose(); // Fecha o modal
+    reset();
+    setImageFile(null);
+    handleClose();
   };
 
   useEffect(() => {
@@ -98,7 +131,7 @@ export default function OpenModalMenu({
       setValue("product", editMenu.product || "");
       setValue("description", editMenu.description || "");
       setValue("category", editMenu.category || "");
-      setValue("price", formatCurrency(editMenu.price || ""));
+      setValue("price", formatCurrency(parseFloat(editMenu.price || "")));
       setValue("image", editMenu.image || "");
     } else {
 
@@ -111,11 +144,11 @@ export default function OpenModalMenu({
       initialFocusRef={initialRef}
       finalFocusRef={finalRef}
       isOpen={isOpen}
-      onClose={resetForm} // Garante que o reset seja feito ao fechar
+      onClose={resetForm}
     >
       <ModalOverlay />
       <ModalContent>
-      <ModalHeader>{editMenu ? "Editar Produto" : "Cadastrar Novo Produto"}</ModalHeader>
+        <ModalHeader>{editMenu ? "Editar Produto" : "Cadastrar Novo Produto"}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box as="form" onSubmit={handleSubmit(handleCreateRegistrationMenu)}>
@@ -156,10 +189,17 @@ export default function OpenModalMenu({
               </FormControl>
             </SimpleGrid>
             <ModalFooter>
-              <Button type="submit" bg="#480e1f" color={"#fff"} mr={3}>
-                Salvar
+              <Button
+                type="submit"
+                bg="#480e1f"
+                color="#fff"
+                _hover={{ bg: "#480e1f" }}
+                variant="solid"
+                mr={3}
+              >
+                {editMenu ? "Editar" : "Salvar"}
               </Button>
-              <Button onClick={resetForm}>Cancelar</Button> {/* Chama o reset ao cancelar */}
+              <Button onClick={resetForm}>Cancelar</Button>
             </ModalFooter>
           </Box>
         </ModalBody>

@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Image,
   Spacer,
   Table,
   TableContainer,
@@ -21,26 +22,41 @@ import { MdAdd, MdCreate, MdDisabledByDefault } from "react-icons/md";
 import OpenModalMenu from "./components/OpenModalMenu";
 import axios from "axios";
 import { RegistrationMenu } from "./formSchema";
+import ConfirmationModal from "../../components/ModalClose";
 
 export function MenuRegistration() {
   const [openModalMenu, setOpenModalMenu] = useState<boolean>(false);
   const [listRegistrationMenu, setListRegistrationMenu] = useState<RegistrationMenu[]>([]);
   const [selectMenu, setSelectMenu] = useState<RegistrationMenu | null>(null);
+  const [disableMenuProduct, setDisableMenuProduct] = useState(false)
 
   const handleOpenModalMenu = () => {
-    setSelectMenu(null); // Certifique-se de que o selectMenu é nulo para novo produto
+    setSelectMenu(null);
     setOpenModalMenu(true);
   };
 
   const handleCloseModalMenu = () => {
     setOpenModalMenu(false);
-    setSelectMenu(null); // Resetar o selectMenu ao fechar o modal
+    setSelectMenu(null);
   };
 
-  const handleModalEditMenu = (item: any) => {
+  const handleModalEditMenu = (item: RegistrationMenu) => {
     setSelectMenu(item);
     setOpenModalMenu(true);
   };
+
+  const handleDisableMenuProduct = () => {
+    setDisableMenuProduct(false)
+  }
+  const handleOpenMenuProduct = () => {
+    setDisableMenuProduct(true)
+  }
+
+  const handleConfirm = () => {
+    console.log("Produto desativado!");
+    handleDisableMenuProduct(); // Fecha o modal após a confirmação
+  };
+
 
   // Função para listar os registros
   const handleListRegistrationMenu = async () => {
@@ -54,7 +70,7 @@ export function MenuRegistration() {
 
   useEffect(() => {
     handleListRegistrationMenu();
-  }, [selectMenu]); 
+  }, [selectMenu]);
 
   return (
     <Box padding={100}>
@@ -93,7 +109,9 @@ export function MenuRegistration() {
                 <Tbody>
                   {listRegistrationMenu.map((item) => (
                     <Tr key={item.id} _hover={{ bg: "#d8d2cb" }}>
-                      <Td>{item.image}</Td>
+                      <Td>
+                        <Image src={item.image}>
+                        </Image></Td>
                       <Td>{item.product}</Td>
                       <Td>{item.description}</Td>
                       <Td>{item.category}</Td>
@@ -111,7 +129,7 @@ export function MenuRegistration() {
                         </Tooltip>
                         <Tooltip label="Desativar">
                           <IconButton
-                            onClick={handleCloseModalMenu}
+                            onClick={handleOpenMenuProduct}
                             bg={"white"}
                             aria-label={"Desativar"}
                             color={"#480e1f"}
@@ -130,9 +148,15 @@ export function MenuRegistration() {
 
         <OpenModalMenu
           isOpen={openModalMenu}
-          handleClose={handleCloseModalMenu} 
+          handleClose={handleCloseModalMenu}
           updateProductList={handleListRegistrationMenu}
-          editMenu={selectMenu ?? undefined} 
+          editMenu={selectMenu ?? undefined}
+        />
+        <ConfirmationModal
+          isOpen={disableMenuProduct}
+          handleClose={handleDisableMenuProduct}
+          onConfirm={handleConfirm}
+          message="Você tem certeza que deseja desativar este produto?"
         />
       </Box>
     </Box>
